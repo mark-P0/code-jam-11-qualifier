@@ -1,0 +1,23 @@
+## https://devopscycle.com/blog/the-ultimate-docker-compose-cheat-sheet/
+## https://stackoverflow.com/questions/65619962/how-to-setup-docker-compose-without-a-dockerfile
+
+services:
+  code-jam-11-qualifier:
+    image: python:3.12.2-slim
+
+    volumes:
+      ## `/usr/src/app` is the "recommended" path by the Python image providers
+      - "./qualifier/:/usr/src/app/"
+
+    ## https://stackoverflow.com/questions/38546755/docker-compose-keep-container-running
+    # tty: true
+    # command: tail -f /dev/null
+
+    command: python /usr/src/app/qualifier.py
+
+    ## https://docs.docker.com/compose/file-watch/
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./qualifier
+    #       target: /usr/src/app
