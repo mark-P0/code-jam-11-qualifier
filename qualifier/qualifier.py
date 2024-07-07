@@ -1,4 +1,5 @@
 from enum import auto, StrEnum
+import warnings
 
 MAX_QUOTE_LENGTH = 50
 
@@ -29,17 +30,23 @@ class Quote:
         Transforms the quote to the appropriate variant indicated by `self.mode` and returns the result
         """
 
-        variant = self.quote
-
         if self.mode == VariantMode.UWU:
-            variant = (
-                self.quote.replace("L", "W")
-                .replace("l", "w")
-                .replace("R", "W")
-                .replace("r", "w")
-                .replace(" U", " U-U")
-                .replace(" u", " u-u")
-            )
+            return self._create_uwu_variant()
+
+        return self.quote
+
+    def _create_uwu_variant(self) -> str:
+        partial = (
+            self.quote.replace("L", "W")
+            .replace("l", "w")
+            .replace("R", "W")
+            .replace("r", "w")
+        )
+
+        variant = partial.replace(" U", " U-U").replace(" u", " u-u")
+        if len(variant) > MAX_QUOTE_LENGTH:
+            warnings.warn("Quote too long, only partially transformed")
+            variant = partial
 
         return variant
 
