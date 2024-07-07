@@ -18,16 +18,18 @@ class DuplicateError(Exception):
 # Implement the class and function below
 class Quote:
     def __init__(self, quote: str, mode: "VariantMode") -> None:
-        self.quote = ...
-        self.mode = ...
+        self.quote = quote
+        self.mode = mode
 
     def __str__(self) -> str:
-        ...
+        return self._create_variant()
 
     def _create_variant(self) -> str:
         """
         Transforms the quote to the appropriate variant indicated by `self.mode` and returns the result
         """
+
+        return self.quote
 
 
 def run_command(command: str) -> None:
@@ -41,7 +43,14 @@ def run_command(command: str) -> None:
         - `quote list` - print a formatted string that lists the current
            quotes to be displayed in discord flavored markdown
     """
-    ...
+
+    sep = " "
+    match command.split(sep):
+        case ["quote", *quote_str_parts]:
+            quote_str = sep.join(quote_str_parts).replace('"', "")
+            quote = Quote(quote_str, VariantMode.NORMAL)
+
+            Database.add_quote(quote)
 
 
 # The code below is available for you to use
