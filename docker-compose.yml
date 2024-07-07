@@ -7,7 +7,7 @@
 ## https://devopscycle.com/blog/the-ultimate-docker-compose-cheat-sheet/
 
 services:
-  code-jam:
+  qualifier:
     # TODO Use different Dockerfiles? Multi-stage?
     build: ./qualifier
 
@@ -19,6 +19,17 @@ services:
     develop:
       watch:
         # TODO Redundant work dir specifying
+        - action: sync
+          path: ./qualifier
+          target: /usr/src/app
+
+  tests:
+    build: ./qualifier
+
+    command: nodemon /usr/src/app/tests.py
+
+    develop:
+      watch:
         - action: sync
           path: ./qualifier
           target: /usr/src/app
