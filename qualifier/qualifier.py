@@ -18,12 +18,12 @@ class DuplicateError(Exception):
 
 def convert_word_to_piglatin(word: str) -> str:
     vowels = "aeiou"
-    if word[0] in vowels:
+    if word[0].lower() in vowels:
         return word + "way"
 
     consonant_slice_end = 0
     for idx, letter in enumerate(word):
-        if letter in vowels:
+        if letter.lower() in vowels:
             consonant_slice_end = idx
             break
 
