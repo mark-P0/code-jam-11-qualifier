@@ -1,5 +1,24 @@
+## https://github.com/docker/compose/issues/11089
+## - `docker compose watch [service]` only shows build status, not messages
+## - `docker compose up --watch [service]` shows log messages as well
+## - `docker compose up --watch --build [service]` rebuilds the image/container, reflecting changes in Dockerfile
+## - `docker compose up --watch --build --no-cache [service]` rebuilds the image/container, reflecting changes in Dockerfile
+
 ## https://devopscycle.com/blog/the-ultimate-docker-compose-cheat-sheet/
 
 services:
   code-jam:
+    # TODO Use different Dockerfiles? Multi-stage?
     build: ./qualifier
+
+    # TODO `nodemon` installed via Dockerfile. Can it be installed from here?
+    # TODO Redundant work dir specifying
+    command: nodemon /usr/src/app/qualifier.py
+
+    ## https://docs.docker.com/compose/file-watch/
+    develop:
+      watch:
+        # TODO Redundant work dir specifying
+        - action: sync
+          path: ./qualifier
+          target: /usr/src/app

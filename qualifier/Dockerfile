@@ -1,5 +1,8 @@
 ## Base image
-FROM python:3.12.2-slim
+FROM nikolaik/python-nodejs:python3.12-nodejs22-slim
+
+# TODO Use different Dockerfiles? Multi-stage?
+RUN npm i -g nodemon
 
 ## Working directory inside container
 ## Usually suggested by the providers of the base image
