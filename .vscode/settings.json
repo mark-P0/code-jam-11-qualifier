@@ -7,5 +7,7 @@
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  }
+  },
+
+  "python.analysis.typeCheckingMode": "strict"
 }

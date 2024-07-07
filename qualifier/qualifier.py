@@ -90,6 +90,9 @@ def run_command(command: str) -> None:
 
             Database.add_quote(quote)
 
+        case _:
+            raise ValueError("Invalid command")
+
 
 # The code below is available for you to use
 # You do not need to implement it, you can assume it will work as specified
