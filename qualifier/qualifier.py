@@ -114,9 +114,12 @@ def run_command(command: str) -> None:
 
     sep = " "
     match command.split(sep):
+        # TODO Check for "trailing" arguments?
         case ["quote", "list"]:
             message = "\n".join(f"- {quote}" for quote in Database.get_quotes())
             print(message)
+
+        # TODO For quotes, check if quote is valid? e.g only 2 quotation marks
 
         case ["quote", "piglatin", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
