@@ -93,6 +93,13 @@ def build_quote_str_from_parts(parts: list[str], sep: str) -> str:
     return quote_str
 
 
+def add_quote_to_database_safely(quote: Quote):
+    try:
+        Database.add_quote(quote)
+    except DuplicateError:
+        print("Quote has already been added previously")
+
+
 def run_command(command: str) -> None:
     """
     Will be given a command from a user. The command will be parsed and executed appropriately.
@@ -111,19 +118,19 @@ def run_command(command: str) -> None:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.PIGLATIN)
 
-            Database.add_quote(quote)
+            add_quote_to_database_safely(quote)
 
         case ["quote", "uwu", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.UWU)
 
-            Database.add_quote(quote)
+            add_quote_to_database_safely(quote)
 
         case ["quote", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.NORMAL)
 
-            Database.add_quote(quote)
+            add_quote_to_database_safely(quote)
 
         case _:
             raise ValueError("Invalid command")
