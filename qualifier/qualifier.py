@@ -114,6 +114,10 @@ def run_command(command: str) -> None:
 
     sep = " "
     match command.split(sep):
+        case ["quote", "list"]:
+            message = "\n".join(f"- {quote}" for quote in Database.get_quotes())
+            print(message)
+
         case ["quote", "piglatin", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.PIGLATIN)
