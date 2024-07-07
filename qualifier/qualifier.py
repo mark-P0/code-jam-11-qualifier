@@ -48,6 +48,9 @@ def run_command(command: str) -> None:
     match command.split(sep):
         case ["quote", *quote_str_parts]:
             quote_str = sep.join(quote_str_parts).replace('"', "")
+            if len(quote_str) > MAX_QUOTE_LENGTH:
+                raise ValueError("Quote is too long")
+
             quote = Quote(quote_str, VariantMode.NORMAL)
 
             Database.add_quote(quote)
