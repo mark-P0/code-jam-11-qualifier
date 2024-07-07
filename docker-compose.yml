@@ -26,10 +26,4 @@ services:
   tests:
     build: ./qualifier
 
-    command: nodemon /usr/src/app/tests.py
-
-    develop:
-      watch:
-        - action: sync
-          path: ./qualifier
-          target: /usr/src/app
+    command: python -m unittest /usr/src/app/tests.py
