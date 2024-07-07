@@ -29,7 +29,19 @@ class Quote:
         Transforms the quote to the appropriate variant indicated by `self.mode` and returns the result
         """
 
-        return self.quote
+        variant = self.quote
+
+        if self.mode == VariantMode.UWU:
+            variant = (
+                self.quote.replace("L", "W")
+                .replace("l", "w")
+                .replace("R", "W")
+                .replace("r", "w")
+                .replace(" U", " U-U")
+                .replace(" u", " u-u")
+            )
+
+        return variant
 
 
 def build_quote_str_from_parts(parts: list[str], sep: str) -> str:
@@ -54,6 +66,12 @@ def run_command(command: str) -> None:
 
     sep = " "
     match command.split(sep):
+        case ["quote", "uwu", *quote_str_parts]:
+            quote_str = build_quote_str_from_parts(quote_str_parts, sep)
+            quote = Quote(quote_str, VariantMode.UWU)
+
+            Database.add_quote(quote)
+
         case ["quote", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.NORMAL)
