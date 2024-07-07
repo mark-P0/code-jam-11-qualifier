@@ -22,6 +22,8 @@ class Quote:
         self.quote = quote
         self.mode = mode
 
+        str(self)  # Trigger quote conversion on creation
+
     def __str__(self) -> str:
         return self._create_variant()
 
@@ -42,8 +44,11 @@ class Quote:
             .replace("R", "W")
             .replace("r", "w")
         )
-
         variant = partial.replace(" U", " U-U").replace(" u", " u-u")
+
+        if variant == self.quote:
+            raise ValueError("Quote was not modified")
+
         if len(variant) > MAX_QUOTE_LENGTH:
             warnings.warn("Quote too long, only partially transformed")
             variant = partial
