@@ -79,6 +79,9 @@ class Quote:
             convert_word_to_piglatin(word) for word in words
         ).capitalize()
 
+        if len(variant) > MAX_QUOTE_LENGTH:
+            raise ValueError("Quote was not modified")
+
         return variant
 
 
