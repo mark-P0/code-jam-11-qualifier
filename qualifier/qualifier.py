@@ -16,6 +16,21 @@ class DuplicateError(Exception):
     """Error raised when there is an attempt to add a duplicate entry to a database"""
 
 
+def convert_word_to_piglatin(word: str) -> str:
+    vowels = "aeiou"
+    if word[0] in vowels:
+        return word + "way"
+
+    consonant_slice_end = 0
+    for idx, letter in enumerate(word):
+        if letter in vowels:
+            consonant_slice_end = idx
+            break
+
+    cluster = word[0:consonant_slice_end]
+    return word[consonant_slice_end:] + cluster + "ay"
+
+
 # Implement the class and function below
 class Quote:
     def __init__(self, quote: str, mode: "VariantMode") -> None:
@@ -34,6 +49,8 @@ class Quote:
 
         if self.mode == VariantMode.UWU:
             return self._create_uwu_variant()
+        if self.mode == VariantMode.PIGLATIN:
+            return self._create_piglatin_variant()
 
         return self.quote
 
@@ -52,6 +69,15 @@ class Quote:
         if len(variant) > MAX_QUOTE_LENGTH:
             warnings.warn("Quote too long, only partially transformed")
             variant = partial
+
+        return variant
+
+    def _create_piglatin_variant(self) -> str:
+        sep = " "
+        words = self.quote.split(sep)
+        variant = sep.join(
+            convert_word_to_piglatin(word) for word in words
+        ).capitalize()
 
         return variant
 
@@ -78,6 +104,12 @@ def run_command(command: str) -> None:
 
     sep = " "
     match command.split(sep):
+        case ["quote", "piglatin", *quote_str_parts]:
+            quote_str = build_quote_str_from_parts(quote_str_parts, sep)
+            quote = Quote(quote_str, VariantMode.PIGLATIN)
+
+            Database.add_quote(quote)
+
         case ["quote", "uwu", *quote_str_parts]:
             quote_str = build_quote_str_from_parts(quote_str_parts, sep)
             quote = Quote(quote_str, VariantMode.UWU)
